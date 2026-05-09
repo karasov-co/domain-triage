@@ -78,18 +78,18 @@ def check_domain(domain, max_attempts=3):
     for attempt in range(max_attempts):
         try:
             start = time.time()
-            responce = requests.get(
+            response = requests.get(
                 url, 
                 timeout=10, 
                 allow_redirects=True, 
                 headers=HEADERS
          )
             elapsed_ms = round((time.time() - start) * 1000)
-            html = responce.text
+            html = response.text
 
             return {
-                "http_status": responce.status_code,
-                "final_url": responce.url,
+                "http_status": response.status_code,
+                "final_url": response.url,
                 "response_time_ms": elapsed_ms,
                 "html_size": len(html),
                 "title": extract_title(html),

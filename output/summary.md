@@ -1,12 +1,12 @@
 # Domain Triage — Summary
 
-Generated: 2026-05-09 16:54:25
+Generated: 2026-05-09 17:24:51
 
 ## Overview
 - **Total domains:** 100
 - **Successfully processed:** 66
 - **Failed:** 34
-- **Elapsed:** 20.0 sec (5.0 dom/s)
+- **Elapsed:** 20.5 sec (4.9 dom/s)
 
 ## Priority buckets
 - **high:** 61

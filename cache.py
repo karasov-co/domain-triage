@@ -6,6 +6,7 @@ DB_PATH = "cache.db"
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
+    conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("""
         CREATE TABLE IF NOT EXISTS domains (
             domain TEXT PRIMARY KEY,
@@ -19,10 +20,15 @@ def init_db():
 
 
 def add_domains(domains):
+    normalized = []
+    for d in domains:
+        d = d.lower().strip().replace("https://", "").replace("http://", "").rstrip("/")
+        if d:
+            normalized.append((d,))
     conn = sqlite3.connect(DB_PATH)
     conn.executemany(
         "INSERT OR IGNORE INTO domains (domain, status) VALUES (?, 'pending')",
-        [(d,) for d in domains]
+        normalized
     )
     conn.commit()
     conn.close()
