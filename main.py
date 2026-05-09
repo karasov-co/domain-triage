@@ -115,7 +115,7 @@ def write_summary_md(results, elapsed_sec, path="output/summary.md"):
     for r in top_domains:
         title = (r.get("title") or "")[:50].replace("|", "/")
         lines.append(
-            f"| {r['domain']} | {r['score']} | {r['bucket']} | {r['action']} | {title} |"
+            f"| {r['domain']} | {r.get('score_1_10')} | {r['bucket']} | {r['action']} | {title} |"
         )
 
     lines.append(f"\n## Top errors")

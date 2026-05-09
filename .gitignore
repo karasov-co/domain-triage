@@ -2,8 +2,6 @@ venv/
 __pycache__/
 *.pyc
 cache.db
-output/*.csv
-output/*.md
 logs/*.log
 .env
 .DS_Store

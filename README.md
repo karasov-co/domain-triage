@@ -64,6 +64,10 @@ domain-triage/
 ```
 seeds.csv → cache (pending) → ThreadPool(10) → [checker → scoring] → cache (done/failed) → output/*
 ```
+## Tests
+
+```bash
+python test_scoring.py
 
 ---
 

@@ -1,0 +1,101 @@
+domain,status,score,score_1_10,bucket,action,http_status,final_url,response_time_ms,title,html_size,tld,spammy_tld,is_parked,reason,error
+stripe.com,done,90,9,high,review_for_outreach,200,https://stripe.com/,534,Stripe | Financial Infrastructure to Grow Your Revenue,580173,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+clearbit.com,done,90,9,high,review_for_outreach,200,https://clearbit.com/,528,Clearbit has joined HubSpot,23175,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+hostinger.com,done,90,9,high,review_for_outreach,200,https://www.hostinger.com/,680,Hostinger - Bring Your Idea Online With a Website,721302,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+asana.com,done,90,9,high,review_for_outreach,200,https://asana.com/,902,"Manage your team’s work, projects, & tasks online • Asana",692306,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+typeform.com,done,90,9,high,review_for_outreach,200,https://www.typeform.com/,812,Typeform: People-Friendly Forms and Surveys,235438,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+bing.com,done,90,9,high,review_for_outreach,200,https://www.bing.com:443/?toWww=1&redig=7D7FC234FAF846669FBA9B18DB7FEDE9,500,Tìm Kiếm - Microsoft Bing,64921,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+shopify.com,done,90,9,high,review_for_outreach,200,https://www.shopify.com/,511,Shopify: The All-in-One Commerce Platform for Businesses - Shopify,468959,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+calendly.com,done,90,9,high,review_for_outreach,200,https://calendly.com/,804,Free Online Appointment Scheduling Software | Calendly,1225587,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+nytimes.com,done,90,9,high,review_for_outreach,200,https://www.nytimes.com/,969,"The New York Times - Breaking News, US News, World News and Videos",1219126,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+vercel.com,done,90,9,high,review_for_outreach,200,https://vercel.com/,403,Vercel: Build and deploy the best web experiences with the AI Cloud,931243,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+supabase.com,done,90,9,high,review_for_outreach,200,https://supabase.com/,355,Supabase | The Postgres Development Platform.,376437,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+mailchimp.com,done,90,9,high,review_for_outreach,200,https://mailchimp.com/,248,Email & SMS Marketing Platform | Mailchimp,521836,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+zapier.com,done,90,9,high,review_for_outreach,200,https://zapier.com/,256,"Zapier: Automate AI Workflows, Agents, and Apps",585165,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+github.com,done,90,9,high,review_for_outreach,200,https://github.com/,396,GitHub · Change is constant. GitHub keeps you ahead. · GitHub,569209,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+fly.io,done,90,9,high,review_for_outreach,200,https://fly.io/,319,Build fast. Run any code fearlessly. · Fly,201721,io,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+render.com,done,90,9,high,review_for_outreach,200,https://render.com/,450,Render | The cloud for builders,354690,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+clickup.com,done,90,9,high,review_for_outreach,200,https://clickup.com/,499,"ClickUpâ¢ | Maximize productivity â¢ Software, AI, and humans converge",944174,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+heroku.com,done,90,9,high,review_for_outreach,200,https://www.heroku.com/,852,Heroku: The Cloud Application Platform | Build. Deploy. Scale.,394589,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+linkedin.com,done,90,9,high,review_for_outreach,200,https://www.linkedin.com/,902,LinkedIn: Log In or Sign Up,140873,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+trello.com,done,90,9,high,review_for_outreach,200,https://trello.com/,511,"Capture, organize, and tackle your to-dos from anywhere | Trello",286053,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+retool.com,done,90,9,high,review_for_outreach,200,https://retool.com/,229,"Retool | Build internal software better, with AI.",359455,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+n8n.io,done,90,9,high,review_for_outreach,200,https://n8n.io/,285,AI Workflow Automation Platform - n8n,359202,io,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+loom.com,done,90,9,high,review_for_outreach,200,https://www.loom.com/,483,Free screen recorder for Mac and PC | Loom,208066,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+slack.com,done,90,9,high,review_for_outreach,200,https://slack.com/,677,Slack | AI Work Platform & Productivity Tools,229174,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+discord.com,done,90,9,high,review_for_outreach,200,https://discord.com/,175,Discord - Group Chat That’s All Fun & Games,162859,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+crisp.chat,done,90,9,high,review_for_outreach,200,https://crisp.chat/en/,783,The AI Customer Support Platform for Every Business - Crisp,330718,chat,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+livechat.com,done,90,9,high,review_for_outreach,200,https://www.livechat.com/,759,LiveChat® - The Best AI Live Chat Software for Business | LiveChat.com,274096,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+freshdesk.com,done,90,9,high,review_for_outreach,200,https://www.freshworks.com/freshdesk/,322,Freshdesk: AI-powered platform for modern customer service | Freshworks,535982,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+cloudflare.com,done,90,9,high,review_for_outreach,200,https://www.cloudflare.com/,963,"Connect, protect, and build everywhere | Cloudflare",977961,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+digitalocean.com,done,90,9,high,review_for_outreach,200,https://www.digitalocean.com/,428,AI-Native Cloud | DigitalOcean,291527,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+abandoned-2017-blog.wordpress.com,done,90,9,high,review_for_outreach,200,https://wordpress.com/typo/?subdomain=abandoned-2017-blog,492,WordPress.com,94063,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+indiehackers.com,done,90,9,high,review_for_outreach,200,https://www.indiehackers.com/,786,Indie Hackers: Work Together to Build Profitable Online Businesses,310021,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+techcrunch.com,done,90,9,high,review_for_outreach,200,https://techcrunch.com/,308,TechCrunch | Startup and Technology News,434246,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+substack.com,done,90,9,high,review_for_outreach,200,https://substack.com/,449,Substack - A new economic engine for culture,77083,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+ghost.org,done,90,9,high,review_for_outreach,200,https://ghost.org/,239,Ghost: The best open source blog & newsletter platform,121256,org,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+framer.com,done,90,9,high,review_for_outreach,200,https://www.framer.com/,965,"Framer: Create a professional website, free. No code website builder loved by designers.",3074656,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+cal.com,done,90,9,high,review_for_outreach,200,https://cal.com/,457,Cal.com | Scheduling Software for Online Bookings,2304592,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+perplexity.ai,done,90,9,high,review_for_outreach,200,https://www.perplexity.ai/,386,Perplexity,10619,ai,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+anthropic.com,done,90,9,high,review_for_outreach,200,https://www.anthropic.com/,503,Home \ Anthropic,256572,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+openai.com,done,90,9,high,review_for_outreach,200,https://openai.com/,247,OpenAI | OpenAI,422271,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+crewai.com,done,90,9,high,review_for_outreach,200,https://crewai.com/,165,The Leading Multi-Agent Platform,136836,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+langchain.com,done,90,9,high,review_for_outreach,200,https://www.langchain.com/,684,"LangChain: Observe, Evaluate, and Deploy Reliable AI Agents",155972,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, +5 normal HTML size",
+notion.so,done,85,8,high,review_for_outreach,200,https://www.notion.com/,1757,The AI workspace that works for you. | Notion,257369,so,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+airtable.com,done,85,8,high,review_for_outreach,200,https://www.airtable.com/,2083,"Airtable: Build Enterprise-ready AI Workflows, Apps & Agents - Airtable",525065,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+intercom.com,done,85,8,high,review_for_outreach,200,https://www.intercom.com/,2261,Intercom | The only helpdesk designed for the AI Agent era,721966,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+twilio.com,done,85,8,high,review_for_outreach,200,https://www.twilio.com/en-us,1584,"Conversational AI and APIs for SMS, Email, Voice | Twilio",710756,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+hubspot.com,done,85,8,high,review_for_outreach,200,https://www.hubspot.com/,2391,HubSpot | Software & Tools for your Business - Homepage,677783,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+salesforce.com,done,85,8,high,review_for_outreach,200,https://www.salesforce.com/ap/?ir=1&bc=OTH,1171,Salesforce: The Customer Company | Salesforce AP,504562,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+miro.com,done,85,8,high,review_for_outreach,200,https://miro.com/,1658,AI Innovation Workspace | Miro,1462857,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+figma.com,done,85,8,high,review_for_outreach,200,https://www.figma.com/,1089,Figma: The Collaborative Interface Design Tool,1525006,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+posthog.com,done,85,8,high,review_for_outreach,200,https://posthog.com/,1445,PostHog – We make dev tools for product engineers,1062236,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+amazonaws.com,done,85,8,high,review_for_outreach,200,https://aws.amazon.com:443/,2468,Cloud Computing Services - Amazon Web Services (AWS),340681,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+ycombinator.com,done,85,8,high,review_for_outreach,200,https://www.ycombinator.com/,1415,Y Combinator,291991,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+webflow.com,done,85,8,high,review_for_outreach,200,https://webflow.com/,1624,Webflow: The agentic web platform for modern businesses,671791,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+bubble.io,done,85,8,high,review_for_outreach,200,https://bubble.io/,1030,Bubble: Build web & mobile apps with the only no-code AI app builder,47745,io,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+docusend.io,done,85,8,high,review_for_outreach,200,https://www.docusend.io/,1003,DocuSend | Document Campaign Automation,54160,io,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+docsend.com,done,85,8,high,review_for_outreach,200,https://www.docsend.com/,2284,"Virtual Data Rooms for Deals, Fundraising, and Compliance - DocSend",350260,com,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+fathom.video,done,85,8,high,review_for_outreach,200,https://www.fathom.ai/,1417,Fathom AI Notetaker - Never Take Notes Again,181110,video,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+granola.ai,done,85,8,high,review_for_outreach,200,https://www.granola.ai/,1816,Granola — The AI Notepad for back-to-back meetings,512674,ai,False,False,"+50 base, +20 HTTP 200 OK, +10 title present, +5 normal HTML size",
+stately.ai,done,80,8,high,review_for_outreach,200,https://stately.ai/,421,,48725,ai,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +5 normal HTML size",
+example.com,done,75,8,high,review_for_outreach,200,https://example.com/,185,Example Domain,528,com,False,False,"+50 base, +20 HTTP 200 OK, +5 fast response, +10 title present, -10 tiny HTML",
+make.com,done,55,6,medium,manual_review,403,https://www.make.com/en,1651,Just a moment...,5537,com,False,False,"+50 base, -10 HTTP 4xx, +10 title present, +5 normal HTML size",
+linode.com,done,55,6,medium,manual_review,403,https://linode.com/,185,403 Forbidden,2982,com,False,False,"+50 base, -10 HTTP 4xx, +5 fast response, +10 title present",
+namecheap.com,done,55,6,medium,manual_review,403,https://www.namecheap.com/,1150,Just a moment...,5642,com,False,False,"+50 base, -10 HTTP 4xx, +10 title present, +5 normal HTML size",
+producthunt.com,done,55,6,medium,manual_review,403,https://producthunt.com/,1270,Just a moment...,5576,com,False,False,"+50 base, -10 HTTP 4xx, +10 title present, +5 normal HTML size",
+godaddy.com,done,45,4,low,deprioritize,403,https://www.godaddy.com/,288,Access Denied,369,com,False,False,"+50 base, -10 HTTP 4xx, +5 fast response, +10 title present, -10 tiny HTML",
+oldnavy-warehouse.com,failed,,,,,,,,,,,,,,connectionerror
+bestbuydiscount-now.net,failed,,,,,,,,,,,,,,connectionerror
+super-deal-shop.xyz,failed,,,,,,,,,,,,,,connectionerror
+instant-cash-2024.info,failed,,,,,,,,,,,,,,connectionerror
+mywebsite-parked.com,failed,,,,,,,,,,,,,,connectionerror
+domain-for-sale-here.net,failed,,,,,,,,,,,,,,connectionerror
+linktr.ee,failed,,,,,,,,,,,,,,connectionerror
+weather-update-zone.com,failed,,,,,,,,,,,,,,connectionerror
+healthcheck-online.org,failed,,,,,,,,,,,,,,connectionerror
+finance-tracker-app.io,failed,,,,,,,,,,,,,,connectionerror
+bestquote-insurance.biz,failed,,,,,,,,,,,,,,connectionerror
+discount-meds-online.net,failed,,,,,,,,,,,,,,connectionerror
+gymnasticsclub-blogspot.com,failed,,,,,,,,,,,,,,connectionerror
+oldforumarchive.net,failed,,,,,,,,,,,,,,connectionerror
+prospect-finder-tool.co,failed,,,,,,,,,,,,,,connectionerror
+crm-leads-export.app,failed,,,,,,,,,,,,,,connectionerror
+paymentgateway-test.com,failed,,,,,,,,,,,,,,connectionerror
+bygonecompany2018.com,failed,,,,,,,,,,,,,,connectionerror
+project-discontinued.org,failed,,,,,,,,,,,,,,connectionerror
+stallout-domain.net,failed,,,,,,,,,,,,,,connectionerror
+hugo-static-blog.dev,failed,,,,,,,,,,,,,,connectionerror
+this-domain-does-not-exist-nowhere-12345.com,failed,,,,,,,,,,,,,,connectionerror
+crypto-airdrop-2025.click,failed,,,,,,,,,,,,,,connectionerror
+nft-mint-now-free.io,failed,,,,,,,,,,,,,,connectionerror
+get-rich-fast-online.biz,failed,,,,,,,,,,,,,,connectionerror
+loan-approval-instant.net,failed,,,,,,,,,,,,,,connectionerror
+old-startup-failed.co,failed,,,,,,,,,,,,,,connectionerror
+geocities-archive.org,failed,,,,,,,,,,,,,,connectionerror
+test-domain-12345.test,failed,,,,,,,,,,,,,,connectionerror
+this-was-a-store.shop,failed,,,,,,,,,,,,,,connectionerror
+seoblog-spammy-content.online,failed,,,,,,,,,,,,,,connectionerror
+backlinks-cheap-now.site,failed,,,,,,,,,,,,,,connectionerror
+buy-followers-fast.life,failed,,,,,,,,,,,,,,connectionerror
+medium.com,failed,,,,,,,,,,,,,,connectionerror
