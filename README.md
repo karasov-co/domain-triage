@@ -199,39 +199,41 @@ python test_scoring.py
 ### Как расширил бы это до v2 с n8n / Make / Slack / CRM
 
 **Архитектура v2:**
+
 ```
 Trigger (n8n cron / webhook)
-    ↓
+  ↓
 Domain Triage container (наш Python)
-    ↓
-output/results.csv → Google Sheets / Airtable
-    ↓
+  ↓
+output/results.csv
+  ↓
+Google Sheets / Airtable
+  ↓
 Filter: action = review_for_outreach
-    ↓
+  ↓
 LLM enrichment (industry, value prop, persona)
-    ↓
+  ↓
 HubSpot / Pipedrive (create lead)
-    ↓
-Slack notification: «Триаж завершён, N новых лидов в CRM, отчёт: [link]»
+  ↓
+Slack notification: «Триаж завершён, N новых лидов в CRM»
 ```
 
 **Конкретно:**
-- **n8n** для оркестрации: cron → HTTP-trigger на наш скрипт (обернутый в FastAPI) → парсинг output → ветвление по action.
-- **Make** для простых интеграций: новая строка в Google Sheets с action=skip → ничего, с review_for_outreach → пуш в HubSpot.
-- **Slack** через webhook: после каждого прогона `summary.md` рендерится в Block Kit и постится в #marketing-leads.
-- **CRM**: для каждого домена с action=review_for_outreach создаётся deal с pre-filled полями (domain, title, score, reason). Поле `reason` особенно ценно — менеджер видит, почему домен попал в outreach.
+- **n8n** — оркестрация: cron → HTTP-trigger на наш скрипт (обёрнутый в FastAPI) → парсинг output
+- **Make** — простые интеграции: новая строка в Google Sheets с action=skip → ничего, с review_for_outreach → создать лид
+- **Slack** — webhook: после каждого прогона `summary.md` рендерится в Block Kit и постится в канал
+- **CRM** — для каждого домена с action=review_for_outreach создаётся deal с pre-filled полями
 
-Главная идея v2: **наш скрипт становится одним шагом в большой цепочке**, а не одиночным CLI. Output остаётся стабильным (CSV + JSON в БД) — внешние системы цепляются к нему.
+Главная идея v2: **наш скрипт становится одним шагом в большой цепочке**, а не одиночным CLI.
 
 ---
 
 ## Зависимости
 
-```
-requests        # HTTP-клиент
-beautifulsoup4  # HTML-парсинг
-lxml            # быстрый парсер
-tqdm            # прогресс-бар
-```
+**Внешние** (`requirements.txt`):
+- `requests` — HTTP-клиент
+- `beautifulsoup4` — HTML-парсинг
+- `lxml` — быстрый парсер
+- `tqdm` — прогресс-бар
 
-Стандартная библиотека: `csv`, `sqlite3`, `argparse`, `concurrent.futures`, `json`, `time`, `os`, `datetime`, `collections`.
+**Стандартная библиотека:** `csv`, `sqlite3`, `argparse`, `concurrent.futures`, `json`, `time`, `os`
