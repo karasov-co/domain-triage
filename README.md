@@ -72,7 +72,7 @@ seeds.csv → cache (pending) → ThreadPool(10) → [checker → scoring] → c
 ## Tests
 
 ```bash
-python test_scoring.py
+pytest -v
 ```
 
 ---
