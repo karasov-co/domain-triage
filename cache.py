@@ -3,9 +3,18 @@ import sqlite3
 
 DB_PATH = "cache.db"
 
+# main.py writes from 10 worker threads at once. SQLite's default busy timeout
+# is 5s, which a burst of concurrent writers can exceed -- and the resulting
+# "database is locked" surfaces as a lost domain, not a retry.
+BUSY_TIMEOUT_SECONDS = 30
+
+
+def _connect():
+    return sqlite3.connect(DB_PATH, timeout=BUSY_TIMEOUT_SECONDS)
+
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = _connect()
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("""
         CREATE TABLE IF NOT EXISTS domains (
@@ -25,7 +34,7 @@ def add_domains(domains):
         d = d.lower().strip().replace("https://", "").replace("http://", "").rstrip("/")
         if d:
             normalized.append((d,))
-    conn = sqlite3.connect(DB_PATH)
+    conn = _connect()
     conn.executemany(
         "INSERT OR IGNORE INTO domains (domain, status) VALUES (?, 'pending')",
         normalized
@@ -35,7 +44,7 @@ def add_domains(domains):
 
 
 def get_pending():
-    conn = sqlite3.connect(DB_PATH)
+    conn = _connect()
     rows = conn.execute(
         "SELECT domain FROM domains WHERE status = 'pending'"
     ).fetchall()
@@ -44,7 +53,7 @@ def get_pending():
 
 
 def save_result(domain, result):
-    conn = sqlite3.connect(DB_PATH)
+    conn = _connect()
     conn.execute(
         "UPDATE domains SET status = 'done', result_json = ? WHERE domain = ?",
         (json.dumps(result, ensure_ascii=False), domain)
@@ -53,18 +62,31 @@ def save_result(domain, result):
     conn.close()
 
 
-def save_failure(domain, error):
-    conn = sqlite3.connect(DB_PATH)
-    conn.execute(
-        "UPDATE domains SET status = 'failed', error = ? WHERE domain = ?",
-        (error, domain)
-    )
+def save_failure(domain, error, result=None):
+    """Record a failed domain.
+
+    `result` is optional because a pipeline error has no facts to store. When
+    the checker did produce facts, pass them: the score, bucket and action were
+    already computed, and dropping them left every failed row in the report with
+    empty score columns.
+    """
+    conn = _connect()
+    if result is None:
+        conn.execute(
+            "UPDATE domains SET status = 'failed', error = ? WHERE domain = ?",
+            (error, domain)
+        )
+    else:
+        conn.execute(
+            "UPDATE domains SET status = 'failed', error = ?, result_json = ? WHERE domain = ?",
+            (error, json.dumps(result, ensure_ascii=False), domain)
+        )
     conn.commit()
     conn.close()
 
 
 def reset_failed():
-    conn = sqlite3.connect(DB_PATH)
+    conn = _connect()
     conn.execute(
         "UPDATE domains SET status = 'pending', error = NULL WHERE status = 'failed'"
     )
@@ -73,7 +95,7 @@ def reset_failed():
 
 
 def get_all_results():
-    conn = sqlite3.connect(DB_PATH)
+    conn = _connect()
     rows = conn.execute(
         "SELECT domain, status, result_json, error FROM domains"
     ).fetchall()
@@ -89,7 +111,7 @@ def get_all_results():
 
 
 def stats():
-    conn = sqlite3.connect(DB_PATH)
+    conn = _connect()
     rows = conn.execute(
         "SELECT status, COUNT(*) FROM domains GROUP BY status"
     ).fetchall()

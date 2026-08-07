@@ -29,6 +29,21 @@ a script.
   pointed at the repository's former owner (`vkarasovpm-dotcom`) and now points
   at `karasov-co`; it had been resolving only through a GitHub rename redirect.
 
+### Fixed
+
+- **Failed domains lost their score, bucket and suggested action.** `save_failure`
+  stored only the error string, so every failed row in `results.csv` had empty
+  score columns — and the `investigate` branch in `get_suggested_action`, which
+  exists specifically for errored domains, could never be observed. The computed
+  result is now stored alongside the failure.
+- **`score_1_10` could be 0**, off the 1–10 scale the README documents and the
+  summary prints: `round(score / 10)` returns 0 for anything below 5. The
+  mapping moved into `scoring.to_score_1_10`, clamped to 1–10 — it had been
+  inline in `main.py`, where no test reached it.
+- **SQLite connections had no busy timeout.** Ten worker threads write
+  concurrently and the 5-second default could be exceeded under a burst, which
+  surfaces as a dropped domain rather than a retry. Connections now use 30s.
+
 ### Existing behaviour at 1.0.0
 
 Recorded here so later entries have a baseline:
@@ -42,7 +57,7 @@ Recorded here so later entries have a baseline:
 - Failed domains are reported, not fatal — one unreachable host cannot end a
   run.
 - Outputs `results.csv`, `failed.csv` and a readable `summary.md`.
-- 46 tests covering the scoring rules and the cache layer, none of which touch
+- 158 tests covering the scoring rules and the cache layer, none of which touch
   the network.
 
 [Unreleased]: https://github.com/karasov-co/domain-triage/compare/v1.0.0...HEAD

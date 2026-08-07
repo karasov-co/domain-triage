@@ -5,6 +5,7 @@ from scoring import (
     calculate_score,
     get_priority_bucket,
     get_suggested_action,
+    to_score_1_10,
 )
 
 
@@ -71,15 +72,35 @@ def test_action_error_thresholds(score, expected_action):
     assert get_suggested_action(score, facts) == expected_action
 
 
-# --- 1-10 display scale (score_1_10 = round(score / 10), as used in main.py) ---
+# --- 1-10 display scale -------------------------------------------------
 
 @pytest.mark.parametrize("score,expected_score_1_10", [
     (10, 1),
     (50, 5),
     (95, 10),
+    (100, 10),
 ])
 def test_score_1_10_scale_boundaries(score, expected_score_1_10):
-    assert round(score / 10) == expected_score_1_10
+    assert to_score_1_10(score) == expected_score_1_10
+
+
+# Regression: round(score / 10) returned 0 below a score of 5, which is off the
+# 1-10 scale the README documents and the summary report prints.
+@pytest.mark.parametrize("score", [0, 1, 4, 5, 9])
+def test_score_1_10_never_falls_off_the_bottom_of_the_scale(score):
+    assert to_score_1_10(score) >= 1
+
+
+@pytest.mark.parametrize("score", range(101))
+def test_score_1_10_always_lands_in_the_documented_range(score):
+    assert 1 <= to_score_1_10(score) <= 10
+
+
+def test_pipeline_uses_the_shared_scale_helper():
+    """The formula was inline in main.py, so no test ever exercised it."""
+    import main
+
+    assert main.to_score_1_10 is to_score_1_10
 
 
 # --- individual scoring deltas (the table in README.md) -----------------

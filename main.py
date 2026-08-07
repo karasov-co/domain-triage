@@ -18,7 +18,12 @@ from cache import (
     stats,
 )
 from checker import check_domain
-from scoring import calculate_score, get_priority_bucket, get_suggested_action
+from scoring import (
+    calculate_score,
+    get_priority_bucket,
+    get_suggested_action,
+    to_score_1_10,
+)
 
 
 def load_seeds(path="seeds.csv"):
@@ -44,14 +49,17 @@ def process_domain(domain):
         result = {
             **facts,
             "score": score,
-            "score_1_10": round(score / 10),
+            "score_1_10": to_score_1_10(score),
             "reason": reason,
             "bucket": bucket,
             "action": action,
         }
 
         if facts.get("error"):
-            save_failure(domain, facts["error"])
+            # Keep the result: the score and the "investigate" action were
+            # already computed, and storing only the error string left every
+            # failed row in the report with empty score columns.
+            save_failure(domain, facts["error"], result)
         else:
             save_result(domain, result)
 

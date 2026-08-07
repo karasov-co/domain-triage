@@ -13,6 +13,45 @@ def test_cache_miss_new_domain_is_pending():
     cache.add_domains(["example.com"])
     assert cache.get_pending() == ["example.com"]
 
+
+# --- regression: a failed domain used to lose its score and action ----------
+
+
+def test_failed_domain_keeps_its_score_when_one_was_computed():
+    cache.add_domains(["dead.com"])
+    result = {"score": 20, "score_1_10": 2, "bucket": "low", "action": "investigate"}
+    cache.save_failure("dead.com", "timeout", result)
+
+    record = next(r for r in cache.get_all_results() if r["domain"] == "dead.com")
+    assert record["status"] == "failed"
+    assert record["error"] == "timeout"
+    assert record["score"] == 20
+    assert record["action"] == "investigate"
+
+
+def test_failed_domain_without_a_result_still_records_the_error():
+    """A pipeline error has no facts to store, so result stays optional."""
+    cache.add_domains(["broken.com"])
+    cache.save_failure("broken.com", "pipeline_error: ValueError")
+
+    record = next(r for r in cache.get_all_results() if r["domain"] == "broken.com")
+    assert record["status"] == "failed"
+    assert record["error"] == "pipeline_error: ValueError"
+    assert "score" not in record
+
+
+def test_rerun_failed_still_works_on_a_failure_that_stored_a_result():
+    cache.add_domains(["dead.com"])
+    cache.save_failure("dead.com", "timeout", {"score": 20})
+    cache.reset_failed()
+    assert cache.get_pending() == ["dead.com"]
+
+
+def test_connections_carry_a_busy_timeout():
+    """10 worker threads write concurrently; the 5s default was too tight."""
+    assert cache.BUSY_TIMEOUT_SECONDS >= 30
+
+
 def test_cache_hit_done_domain_is_not_reprocessed():
     cache.add_domains(["example.com"])
     cache.save_result("example.com", {"score": 90})

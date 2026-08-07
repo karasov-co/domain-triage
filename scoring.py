@@ -65,6 +65,16 @@ def calculate_score(facts):
     reason = ", ".join(reasons)
     return score, reason
 
+def to_score_1_10(score):
+    """Map the 0-100 score onto the 1-10 display scale.
+
+    round(score / 10) alone returns 0 for anything under 5, which is off the
+    scale the README documents and the reports print. The floor keeps the two
+    consistent -- a domain that scored at all is at least a 1.
+    """
+    return _clip(round(score / 10), 1, 10)
+
+
 def get_priority_bucket(score):
     if score >= 75:
         return "high"
