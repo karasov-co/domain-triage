@@ -259,3 +259,18 @@ Slack notification: «Триаж завершён, N новых лидов в CR
 - `tqdm` — прогресс-бар
 
 **Стандартная библиотека:** `csv`, `sqlite3`, `argparse`, `concurrent.futures`, `json`, `time`, `os`.
+
+---
+
+## Как участвовать
+
+Issues и pull requests приветствуются — см. [CONTRIBUTING.md](CONTRIBUTING.md)
+(на английском). От участников ожидается соблюдение
+[Code of Conduct](CODE_OF_CONDUCT.md). История релизов —
+в [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## Лицензия
+
+[MIT](LICENSE) © Vitalii Karasov

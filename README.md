@@ -1,6 +1,6 @@
 # Domain Triage — AI Automation Command Center
 
-[![CI](https://github.com/vkarasovpm-dotcom/domain-triage/actions/workflows/ci.yml/badge.svg)](https://github.com/vkarasovpm-dotcom/domain-triage/actions/workflows/ci.yml)
+[![CI](https://github.com/karasov-co/domain-triage/actions/workflows/ci.yml/badge.svg)](https://github.com/karasov-co/domain-triage/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 English | [Русский](README.ru.md)
@@ -262,3 +262,17 @@ The main idea of v2: **our script becomes one step in a larger chain**, not a st
 - `tqdm` — progress bar
 
 **Standard library:** `csv`, `sqlite3`, `argparse`, `concurrent.futures`, `json`, `time`, `os`.
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+Participants are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+Release history is in [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## License
+
+[MIT](LICENSE) © Vitalii Karasov
