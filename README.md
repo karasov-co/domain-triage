@@ -1,9 +1,14 @@
 # Domain Triage — AI Automation Command Center
 
-Pipeline для триажа списка доменов: на входе CSV из 100 доменов, на выходе — оценка каждого по шкале 1–10, рекомендация что с ним делать (outreach / manual review / skip), и читаемый отчёт.
+[![CI](https://github.com/vkarasovpm-dotcom/domain-triage/actions/workflows/ci.yml/badge.svg)](https://github.com/vkarasovpm-dotcom/domain-triage/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**Производительность:** 100 доменов за ~20 секунд (10 параллельных потоков).
-**Устойчивость:** упавшие домены не валят скрипт, попадают в отчёт. Поддерживается докачка и rerun-failed.
+English | [Русский](README.ru.md)
+
+Pipeline for triaging a list of domains: takes a CSV of 100 domains as input, and outputs a score for each on a 1–10 scale, a recommendation of what to do with it (outreach / manual review / skip), and a readable report.
+
+**Performance:** 100 domains in ~20 seconds (10 parallel workers).
+**Resilience:** failed domains don't crash the script — they land in the report. Resuming and rerun-failed are supported.
 
 ---
 
@@ -28,37 +33,37 @@ open output/results.csv
 python main.py [--seeds PATH] [--limit N] [--workers N] [--rerun-failed]
 ```
 
-| Флаг | Назначение |
+| Flag | Purpose |
 |---|---|
-| `--seeds PATH` | путь к CSV (по умолчанию `seeds.csv`) |
-| `--limit N` | обработать только первые N доменов |
-| `--workers N` | количество параллельных потоков (по умолчанию 10) |
-| `--rerun-failed` | повторить только упавшие домены |
+| `--seeds PATH` | path to the CSV (default `seeds.csv`) |
+| `--limit N` | process only the first N domains |
+| `--workers N` | number of parallel workers (default 10) |
+| `--rerun-failed` | retry only the failed domains |
 
-**Типичные сценарии:**
+**Typical scenarios:**
 
 ```bash
-rm -f cache.db && python main.py --limit 5    # быстрый тест
-rm -f cache.db && python main.py              # полный прогон
-python main.py --rerun-failed                 # повтор только failed
+rm -f cache.db && python main.py --limit 5    # quick test
+rm -f cache.db && python main.py              # full run
+python main.py --rerun-failed                 # retry failed only
 ```
 
 ---
 
-## Структура проекта
+## Project structure
 
 ```
 domain-triage/
-├── seeds.csv          # вход
+├── seeds.csv          # input
 ├── cache.py           # SQLite state machine (pending/done/failed)
-├── checker.py         # HTTP + retry + парсинг (status, title, html_size, tld, parking)
+├── checker.py         # HTTP + retry + parsing (status, title, html_size, tld, parking)
 ├── scoring.py         # rule-based 1–10 + bucket + action
-├── main.py            # оркестратор: CLI, параллельность, output
-├── cache.db           # БД с состоянием (создаётся автоматически)
+├── main.py            # orchestrator: CLI, parallelism, output
+├── cache.db           # state DB (created automatically)
 └── output/
-    ├── results.csv    # все домены, отсортированы по score
-    ├── failed.csv     # только упавшие, с причиной
-    └── summary.md     # отчёт для человека
+    ├── results.csv    # all domains, sorted by score
+    ├── failed.csv     # only the failed ones, with a reason
+    └── summary.md     # human-readable report
 ```
 
 **Pipeline:**
@@ -77,48 +82,48 @@ pytest -v
 
 ---
 
-## Что проверял и почему
+## What I checked and why
 
-Для каждого домена собираю минимально достаточный набор сигналов, который позволяет принять решение **«стоит ли тратить время человека на этот домен»**.
+For each domain I collect the minimally sufficient set of signals needed to decide **"is it worth spending a human's time on this domain."**
 
-| Сигнал | Зачем |
+| Signal | Why |
 |---|---|
-| **HTTP status** | Базовый признак «жив ли сайт». 200 ≠ хорошо, но 4xx/5xx = почти точно мимо. |
-| **Final URL после редиректов** | Помогает увидеть, куда реально ведёт домен (например, на чужой shop). |
-| **Response time** | Быстрый ответ → реальный сайт; медленный → возможно заглушка/честный пот, нужен ручной взгляд. |
-| **HTML size** | Очень маленький HTML (<1 KB) часто признак паркинга или ошибки. |
-| **`<title>`** | Главный текстовый сигнал. Отсутствие title = слабый сайт или ошибка. |
-| **TLD** | Спам-TLD (.xyz, .top, .tk, .click и т.д.) — слабый негативный сигнал. |
-| **Parking keywords** | Прямые маркеры паркинга в HTML («domain for sale», «buy this domain» и т.д.). |
+| **HTTP status** | Basic "is the site alive" signal. 200 ≠ good, but 4xx/5xx = almost certainly a miss. |
+| **Final URL after redirects** | Helps see where the domain actually leads (e.g. to someone else's shop). |
+| **Response time** | Fast response → a real site; slow → possibly a stub/honest sweat, needs a manual look. |
+| **HTML size** | Very small HTML (<1 KB) is often a sign of parking or an error. |
+| **`<title>`** | The main text signal. Missing title = weak site or an error. |
+| **TLD** | Spammy TLDs (.xyz, .top, .tk, .click, etc.) — a weak negative signal. |
+| **Parking keywords** | Direct parking markers in the HTML ("domain for sale", "buy this domain", etc.). |
 
 ---
 
-## Что НЕ стал проверять и почему
+## What I did NOT check and why
 
-| Не делал | Почему |
+| Skipped | Why |
 |---|---|
-| **WHOIS / возраст домена** | Дополнительная сетевая нагрузка, rate limits у whois-серверов, добавляет 1–3s/домен. На 100 доменах не критично, но MVP без него уже информативен. |
-| **DNS-records (MX, SPF, etc.)** | Нужно для оценки «настоящий ли это бизнес», но требует отдельной библиотеки и удваивает время. Оставил на v2. |
-| **Скриншот сайта** | Дорогой headless browser (Playwright). Ценность есть для UI-обзора, но сильно замедляет. |
-| **Языковая детекция / тематика** | Это уже работа для LLM-обогащения top-bucket доменов. На уровне «отсеять мусор» не нужно. |
-| **SSL certificate validity** | Косвенно покрыто: невалидный SSL → SSLError → попадает в failed. Глубокий разбор сертификата — overkill. |
-| **robots.txt / sitemap.xml** | Сигнал «сайт настроен серьёзно», но дорогой по дополнительным запросам. На v2. |
+| **WHOIS / domain age** | Extra network load, rate limits on whois servers, adds 1–3s/domain. Not critical at 100 domains, but the MVP is already informative without it. |
+| **DNS records (MX, SPF, etc.)** | Needed to assess "is this a real business," but requires a separate library and doubles the time. Left for v2. |
+| **Website screenshot** | An expensive headless browser (Playwright). There's value for a UI overview, but it slows things down a lot. |
+| **Language detection / topic** | That's already work for LLM enrichment of top-bucket domains. Not needed at the "filter out the junk" level. |
+| **SSL certificate validity** | Indirectly covered: invalid SSL → SSLError → lands in failed. A deep certificate breakdown is overkill. |
+| **robots.txt / sitemap.xml** | A signal that "the site is seriously set up," but expensive in extra requests. For v2. |
 
-Принцип: **в MVP только то, что отвечает на главный вопрос — выкинуть или оставить для review**. Всё, что про «классификация бизнеса/индустрии» — это уже следующий слой (LLM-enrichment).
+Principle: **in the MVP, only what answers the main question — discard or keep for review**. Everything about "business/industry classification" is already the next layer (LLM enrichment).
 
 ---
 
-## Логика scoring
+## Scoring logic
 
-**Подход — rule-based** (не ML). Причины:
+**Approach — rule-based** (not ML). Reasons:
 
-- Объяснимость: каждый score сопровождается полем `reason` («+50 base, +20 HTTP 200, −15 spammy TLD»), что важно для доверия пользователя.
-- Нет labeled данных для ML.
-- Легко калибровать: один файл `scoring.py`, табличка весов.
+- Explainability: every score comes with a `reason` field ("+50 base, +20 HTTP 200, −15 spammy TLD"), which matters for user trust.
+- No labeled data for ML.
+- Easy to calibrate: one file, `scoring.py`, a small table of weights.
 
-**Формула:** старт 50, дальше плюсы и минусы, на выходе clip(0, 100), потом маппинг на 1–10 (`score_1_10 = round(score/10)`).
+**Formula:** start at 50, then pluses and minuses, output clipped to (0, 100), then mapped to 1–10 (`score_1_10 = round(score/10)`).
 
-| Сигнал | Дельта |
+| Signal | Delta |
 |---|---|
 | HTTP 200 | +20 |
 | HTTP 3xx | +5 |
@@ -129,99 +134,99 @@ pytest -v
 | Other request error | −15 |
 | Response <1s | +5 |
 | Response >5s | −5 |
-| `<title>` присутствует | +10 |
+| `<title>` present | +10 |
 | HTML size >5 KB | +5 |
 | HTML size <1 KB | −10 |
 | Parked domain | −25 |
 | Spammy TLD | −15 |
 
-**Bucket** — техническая категория по score: `high` (≥75), `medium` (≥50), `low` (≥25), `skip` (<25).
+**Bucket** — a technical category based on score: `high` (≥75), `medium` (≥50), `low` (≥25), `skip` (<25).
 
-**Action** — бизнес-рекомендация, **учитывает контекст**:
+**Action** — a business recommendation, **context-aware**:
 
-- `parked=True` → action=`skip` независимо от score (бизнес-правило перебивает число).
-- `error` есть → `investigate` если score≥25, иначе `skip`.
-- Иначе по score: `review_for_outreach` / `manual_review` / `deprioritize` / `skip`.
+- `parked=True` → action=`skip` regardless of score (the business rule overrides the number).
+- `error` present → `investigate` if score≥25, otherwise `skip`.
+- Otherwise by score: `review_for_outreach` / `manual_review` / `deprioritize` / `skip`.
 
-Разделение bucket/action — это **separation of concerns**: завтра поменяются бизнес-правила outreach, поменяется только `get_suggested_action`, аналитика по buckets останется нетронутой.
-
----
-
-## Что бы добавил, если бы было ещё 2 дня
-
-**День 1 — точность scoring:**
-
-- WHOIS-обогащение: возраст домена, регистратор. Молодой домен на .xyz через NameSilo = сильный спам-сигнал.
-- Контентные сигналы: detect contact form, copyright year в футере, наличие /about /pricing страниц.
-- Снятие HTML-снапшота для каждого done-домена в отдельную папку — пригодится для последующего ML/LLM.
-
-**День 2 — LLM-обогащение и интеграции:**
-
-- Для top-bucket доменов: пропустить homepage через LLM с промптом «классифицируй индустрию, оцени серьёзность 1–10, вытащи value proposition в одном предложении». Это даёт **персонализацию для outreach**.
-- Webhook в n8n / Make: после прогона отправлять `summary.md` в Slack-канал, top-10 в CRM как новые leads.
-- Pytest-покрытие для checker и cache (сейчас тесты только в scoring).
+Splitting bucket/action is **separation of concerns**: tomorrow the outreach business rules will change, and only `get_suggested_action` will change — the bucket analytics stay untouched.
 
 ---
 
-## Где сломается код на 5 000 доменов
+## What I would add given 2 more days
 
-Прогноз по слоям:
+**Day 1 — scoring accuracy:**
 
-**1. Время.** Сейчас 5 dom/s. На 5 000 → ~17 минут с 10 потоками. Терпимо, но долго.
+- WHOIS enrichment: domain age, registrar. A young domain on .xyz via NameSilo = a strong spam signal.
+- Content signals: detect contact form, copyright year in the footer, presence of /about /pricing pages.
+- Taking an HTML snapshot for each done domain into a separate folder — useful for later ML/LLM work.
 
-- Решение: поднять `--workers` до 30–50. Дальше упрёмся в локальный DNS / rate limits.
-- Радикально: переход с threads на **async** (`aiohttp` + `asyncio`) — даёт +10× при той же памяти.
+**Day 2 — LLM enrichment and integrations:**
 
-**2. SQLite writes.** SQLite не умеет concurrent writes — потоки сериализуются на write lock. На 5 000 заметно. На 50 000 — критично.
-
-- Решение: batch insert (`executemany`) или переход на Postgres.
-
-**3. Memory.** `get_all_results()` тянет всё в память. На 5K — десятки MB, ок. На 100K — сотни MB, нужен streaming-генератор.
-
-**4. Rate limiting от целевых сайтов.** При 30+ потоках с одного IP некоторые сервера начнут банить (Cloudflare, Akamai). Часть «живых» доменов ложно попадёт в failed.
-
-- Решение: прокси-пул, ротация User-Agent, задержка между запросами на один и тот же домен.
-
-**5. DNS.** Локальный resolver не любит шквал запросов.
-
-- Решение: in-process DNS cache (`aiodns`) или системный resolver с кешем.
-
-**Последовательность миграции при росте:** workers → async → Postgres → прокси-пул. **Сначала измерить, потом оптимизировать** — не делать всё сразу.
+- For top-bucket domains: run the homepage through an LLM with a prompt like "classify the industry, rate seriousness 1–10, extract the value proposition in one sentence." This gives **personalization for outreach**.
+- Webhook into n8n / Make: after a run, send `summary.md` to a Slack channel, top-10 to the CRM as new leads.
+- Pytest coverage for checker and cache (currently tests exist only for scoring).
 
 ---
 
-## Какие допущения сделал из-за размытости ТЗ
+## Where the code breaks at 5,000 domains
 
-1. **Score 1–10:** реализован как `round(score_0_100 / 10)`. Внутри держу 0–100 для гранулярности (легче калибровать веса), наружу даю 1–10 как в ТЗ.
-2. **«Интересен для ручного просмотра»** интерпретирую как «может быть лидом для outreach» — отсюда action `review_for_outreach` для high-bucket.
-3. **Триаж = бинарное «выкинуть/оставить»**, не классификация по индустрии. Классификация — отдельный слой (LLM), не в MVP.
-4. **Парковочные ключевые слова** — английские, фиксированный список. Русские/мультиязычные — out of scope.
-5. **Spammy TLD list** — ручной, основан на общеизвестных репутационных рейтингах (.tk, .ml, .ga, .cf, .xyz, .top и т.д.). Не претендует на полноту.
-6. **Только HTTPS:** все запросы идут на `https://`. Если домен живёт только на HTTP — будет в failed. На v2 — fallback HTTP→HTTPS.
-7. **Timeout 10s** — компромисс между строгостью и терпимостью к медленным серверам.
-8. **3 retry** для transient errors (timeout, connection error). Permanent errors (SSL, redirects, 4xx) не повторяю — бессмысленно.
-9. **Парковки в реальном `seeds.csv`:** все «парковочные» домены в наборе оказались NXDOMAIN (физически не зарегистрированы), а не live-паркинги. Они корректно ловятся как `connection_error` → `action=skip`. `detect_parking` реализован для случаев live-паркингов с keywords/title-эвристиками, но в данном наборе срабатывать ему не на чем. На реальных датасетах с Sedo/GoDaddy parking — будет работать.
+Forecast by layer:
+
+**1. Time.** Currently 5 dom/s. At 5,000 → ~17 minutes with 10 workers. Tolerable, but slow.
+
+- Fix: raise `--workers` to 30–50. Beyond that we hit local DNS / rate limits.
+- Radical fix: switch from threads to **async** (`aiohttp` + `asyncio`) — gives +10× at the same memory footprint.
+
+**2. SQLite writes.** SQLite doesn't do concurrent writes — threads serialize on the write lock. Noticeable at 5,000. Critical at 50,000.
+
+- Fix: batch insert (`executemany`) or switch to Postgres.
+
+**3. Memory.** `get_all_results()` pulls everything into memory. At 5K — tens of MB, fine. At 100K — hundreds of MB, needs a streaming generator.
+
+**4. Rate limiting from target sites.** With 30+ workers from a single IP, some servers will start banning (Cloudflare, Akamai). Some "live" domains will falsely land in failed.
+
+- Fix: proxy pool, User-Agent rotation, a delay between requests to the same domain.
+
+**5. DNS.** The local resolver doesn't like a burst of requests.
+
+- Fix: an in-process DNS cache (`aiodns`) or a system resolver with caching.
+
+**Migration sequence as it grows:** workers → async → Postgres → proxy pool. **Measure first, optimize second** — don't do it all at once.
 
 ---
 
-## Бонусы (всё реализовано)
+## Assumptions made due to ambiguous requirements
 
-- ✅ **Обработка ошибок:** упавшие домены не крашат скрипт, попадают в `failed.csv` и в summary с причиной. Двухуровневая защита: специфические `except` в `check_domain` + safety net `except Exception` в `process_domain`.
-- ✅ **`--rerun-failed`:** переводит failed → pending, обрабатывает только их. Уже сделанные домены не трогаются.
-- ✅ **Кеширование уже проверенных:** SQLite с PK на domain + `INSERT OR IGNORE`. Повторный `python main.py` ничего не пере-обрабатывает (idempotent). Прерывание на середине → продолжение с того же места.
-- ✅ **Параллелизм:** `ThreadPoolExecutor` с настраиваемым `--workers` (default 10). Дал 12× speedup на 100 доменах.
-- ⚠️ **Rate limiting** реализован частично (через ограничение workers). Per-domain rate limit и прокси-пул — на v2.
+1. **Score 1–10:** implemented as `round(score_0_100 / 10)`. Internally I keep 0–100 for granularity (easier to calibrate weights), externally I expose 1–10 as in the spec.
+2. **"Interesting for manual review"** I interpret as "could be a lead for outreach" — hence the `review_for_outreach` action for the high bucket.
+3. **Triage = a binary "discard/keep"**, not an industry classification. Classification is a separate layer (LLM), not in the MVP.
+4. **Parking keywords** — English, a fixed list. Russian/multilingual is out of scope.
+5. **Spammy TLD list** — manual, based on well-known reputation ratings (.tk, .ml, .ga, .cf, .xyz, .top, etc.). Not meant to be exhaustive.
+6. **HTTPS only:** all requests go to `https://`. If a domain only lives on HTTP — it ends up in failed. For v2 — an HTTP→HTTPS fallback.
+7. **10s timeout** — a compromise between strictness and tolerance for slow servers.
+8. **3 retries** for transient errors (timeout, connection error). Permanent errors (SSL, redirects, 4xx) aren't retried — pointless.
+9. **Parking in the real `seeds.csv`:** all the "parked" domains in the set turned out to be NXDOMAIN (not physically registered), not live parking pages. They're correctly caught as `connection_error` → `action=skip`. `detect_parking` is implemented for live-parking cases with keyword/title heuristics, but in this dataset there's nothing for it to trigger on. On real datasets with Sedo/GoDaddy parking, it will work.
 
 ---
 
-## Как расширил бы это до v2 с n8n / Make / Slack / CRM
+## Bonuses (all implemented)
 
-**Архитектура v2:**
+- ✅ **Error handling:** failed domains don't crash the script, they land in `failed.csv` and in the summary with a reason. Two-tier protection: specific `except` clauses in `check_domain` + a safety net `except Exception` in `process_domain`.
+- ✅ **`--rerun-failed`:** moves failed → pending, processes only those. Already-done domains aren't touched.
+- ✅ **Caching of already-checked domains:** SQLite with a PK on domain + `INSERT OR IGNORE`. Running `python main.py` again reprocesses nothing (idempotent). An interruption mid-run → resumes from the same place.
+- ✅ **Parallelism:** `ThreadPoolExecutor` with a configurable `--workers` (default 10). Gave a 12× speedup on 100 domains.
+- ⚠️ **Rate limiting** is partially implemented (via limiting workers). Per-domain rate limiting and a proxy pool — for v2.
+
+---
+
+## How I would extend this to v2 with n8n / Make / Slack / CRM
+
+**v2 architecture:**
 
 ```
 Trigger (n8n cron / webhook)
   ↓
-Domain Triage container (наш Python)
+Domain Triage container (our Python)
   ↓
 output/results.csv
   ↓
@@ -233,27 +238,27 @@ LLM enrichment (industry, value prop, persona)
   ↓
 HubSpot / Pipedrive (create lead)
   ↓
-Slack notification: «Триаж завершён, N новых лидов в CRM»
+Slack notification: "Triage complete, N new leads in the CRM"
 ```
 
-**Конкретно:**
+**Specifically:**
 
-- **n8n** — оркестрация: cron → HTTP-trigger на наш скрипт (обёрнутый в FastAPI) → парсинг output.
-- **Make** — простые интеграции: новая строка в Google Sheets с `action=skip` → ничего, с `review_for_outreach` → создать лид.
-- **Slack** — webhook: после каждого прогона `summary.md` рендерится в Block Kit и постится в канал.
-- **CRM** — для каждого домена с `action=review_for_outreach` создаётся deal с pre-filled полями.
+- **n8n** — orchestration: cron → HTTP trigger to our script (wrapped in FastAPI) → parse the output.
+- **Make** — simple integrations: a new row in Google Sheets with `action=skip` → nothing, with `review_for_outreach` → create a lead.
+- **Slack** — webhook: after each run, `summary.md` is rendered into Block Kit and posted to the channel.
+- **CRM** — for each domain with `action=review_for_outreach` a deal is created with pre-filled fields.
 
-Главная идея v2: **наш скрипт становится одним шагом в большой цепочке**, а не одиночным CLI.
+The main idea of v2: **our script becomes one step in a larger chain**, not a standalone CLI.
 
 ---
 
-## Зависимости
+## Dependencies
 
-**Внешние** (`requirements.txt`):
+**External** (`requirements.txt`):
 
-- `requests` — HTTP-клиент
-- `beautifulsoup4` — HTML-парсинг
-- `lxml` — быстрый парсер
-- `tqdm` — прогресс-бар
+- `requests` — HTTP client
+- `beautifulsoup4` — HTML parsing
+- `lxml` — fast parser
+- `tqdm` — progress bar
 
-**Стандартная библиотека:** `csv`, `sqlite3`, `argparse`, `concurrent.futures`, `json`, `time`, `os`.
+**Standard library:** `csv`, `sqlite3`, `argparse`, `concurrent.futures`, `json`, `time`, `os`.

@@ -1,0 +1,5 @@
+[lint]
+ignore = [
+    "BLE001",  # broad except is an intentional safety net (process_domain, check_domain, main loop)
+    "DTZ005",  # summary.md timestamp is meant to be local wall-clock time, not UTC
+]

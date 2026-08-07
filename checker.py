@@ -1,12 +1,13 @@
-import requests
-import time
 import random
+import time
+
+import requests
 from bs4 import BeautifulSoup
 from requests.exceptions import (
     ConnectionError,
+    RequestException,
     Timeout,
     TooManyRedirects,
-    RequestException
 )
 
 HEADERS = {

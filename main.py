@@ -1,16 +1,25 @@
+import argparse
 import csv
 import os
 import time
-import argparse
-from datetime import datetime
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 
 from tqdm import tqdm
 
-from cache import init_db, add_domains, get_pending, save_result, save_failure, stats, get_all_results
+from cache import (
+    add_domains,
+    get_all_results,
+    get_pending,
+    init_db,
+    save_failure,
+    save_result,
+    stats,
+)
 from checker import check_domain
 from scoring import calculate_score, get_priority_bucket, get_suggested_action
+
 
 def load_seeds(path="seeds.csv"):
     domains = []
@@ -93,32 +102,32 @@ def write_summary_md(results, elapsed_sec, path="output/summary.md"):
     top_domains = sorted(done, key=lambda r: -(r.get("score") or 0))[:10]
 
     lines = []
-    lines.append(f"# Domain Triage — Summary")
+    lines.append("# Domain Triage — Summary")
     lines.append(f"\nGenerated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    lines.append(f"\n## Overview")
+    lines.append("\n## Overview")
     lines.append(f"- **Total domains:** {total}")
     lines.append(f"- **Successfully processed:** {len(done)}")
     lines.append(f"- **Failed:** {len(failed)}")
     lines.append(f"- **Elapsed:** {elapsed_sec:.1f} sec ({total/elapsed_sec:.1f} dom/s)")
 
-    lines.append(f"\n## Priority buckets")
+    lines.append("\n## Priority buckets")
     for bucket in ("high", "medium", "low", "skip"):
         lines.append(f"- **{bucket}:** {bucket_counts.get(bucket, 0)}")
 
-    lines.append(f"\n## Suggested actions")
+    lines.append("\n## Suggested actions")
     for action, count in action_counts.most_common():
         lines.append(f"- `{action}`: {count}")
 
-    lines.append(f"\n## Top 10 domains by score")
-    lines.append(f"\n| Domain | Score | Bucket | Action | Title |")
-    lines.append(f"|---|---|---|---|---|")
+    lines.append("\n## Top 10 domains by score")
+    lines.append("\n| Domain | Score | Bucket | Action | Title |")
+    lines.append("|---|---|---|---|---|")
     for r in top_domains:
         title = (r.get("title") or "")[:50].replace("|", "/")
         lines.append(
             f"| {r['domain']} | {r.get('score_1_10')} | {r['bucket']} | {r['action']} | {title} |"
         )
 
-    lines.append(f"\n## Top errors")
+    lines.append("\n## Top errors")
     if error_counts:
         for err, count in error_counts:
             lines.append(f"- `{err}`: {count}")
@@ -198,7 +207,7 @@ def main():
                     print(f"\n[!] Unexpected error for {domain}: {e}")
         elapsed = time.time() - t0
 
-    print(f"[5/5] Writing output...")
+    print("[5/5] Writing output...")
     os.makedirs("output", exist_ok=True)
     results = get_all_results()
     write_results_csv(results)
