@@ -1,4 +1,4 @@
-# Domain Triage — AI Automation Command Center
+# Domain Triage: AI Automation Command Center
 
 [![CI](https://github.com/karasov-co/domain-triage/actions/workflows/ci.yml/badge.svg)](https://github.com/karasov-co/domain-triage/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -276,3 +276,9 @@ Release history is in [CHANGELOG.md](CHANGELOG.md).
 ## License
 
 [MIT](LICENSE) © Vitalii Karasov
+
+## Author
+
+**Vitalii Karasov** designs and ships AI systems for document-heavy operations, and measures them before they go live. Client work: [drawing intake, New York](https://karasov.co/case-studies/architectural-drawing-intake-new-york) (54 of 56 sheets filed with no person; [how it was measured](https://karasov.co/case-studies/drawing-intake-evaluation)) and [ATAMAN Studio, Los Angeles](https://karasov.co/case-studies/ataman-studio) (10,000+ production runs).
+
+[karasov.co](https://karasov.co) · [LinkedIn](https://www.linkedin.com/in/vitaliikarasov/) · [Telegram](https://t.me/karvitalii)
